@@ -1,0 +1,31 @@
+import QtQuick
+import PrimaProva
+import QtQuick.Controls
+
+Window {
+    width: mainScreen.width
+    height: mainScreen.height
+
+    visible: true
+    title: "Prima Interfaccia"
+
+    Screen01 {
+        id: mainScreen
+    }
+    Button {
+        id: myButton
+        text: "Clicca"
+        anchors.centerIn: parent
+
+        background: Rectangle {
+            id: buttonBackground
+            color: "grey"
+        }
+
+        onClicked: {
+            myButton.text = "Premuto!"
+            buttonBackground.color = "red"
+            mainScreen.color = "purple"
+        }
+    }
+}
