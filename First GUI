@@ -19,7 +19,14 @@ Window {
 
         background: Rectangle {
             id: buttonBackground
+            radius: 10
             color: "grey"
+            Behavior on color {
+
+                ColorAnimation {
+                    duration: 500
+                }
+            }
         }
 
         onClicked: {
