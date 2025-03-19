@@ -105,3 +105,111 @@ ApplicationWindow {
         }
     }
 }
+
+
+
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+
+ApplicationWindow {
+    visible: true
+    width: 600
+    height: 400
+    title: "Simulazione Canale Estuario"
+
+    // StackView per gestire il passaggio tra schermate
+    StackView {
+        id: stackView
+        anchors.fill: parent
+        initialItem: initialScreen // Impostiamo la schermata iniziale
+
+        // Definiamo la schermata iniziale
+        Component {
+            id: initialScreen
+            Item {
+                width: parent.width
+                height: parent.height
+
+                Rectangle {
+                    width: parent.width
+                    height: parent.height
+                    color: "lightblue"
+
+                    // Contenuto della schermata iniziale
+                    Column {
+                        anchors.centerIn: parent
+                        spacing: 20
+
+                        Text {
+                            text: "Benvenuto alla Simulazione"
+                            font.pointSize: 20
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+
+                        Row {
+                            spacing: 20
+                            Button {
+                                text: "Avvia Simulazione"
+                                onClicked: {
+                                    stackView.push(simulationScreen) // Passiamo alla schermata della simulazione
+                                }
+                            }
+
+                            Button {
+                                text: "Esci"
+                                onClicked: {
+                                    Qt.quit()
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Definiamo la schermata della simulazione
+        Component {
+            id: simulationScreen
+            Item {
+                width: parent.width
+                height: parent.height
+
+                Rectangle {
+                    width: parent.width
+                    height: parent.height
+                    color: "lightgreen"
+
+                    // Contenuto della schermata della simulazione
+                    Column {
+                        anchors.centerIn: parent
+                        spacing: 20
+
+                        Text {
+                            text: "Simulazione Canale Estuario"
+                            font.pointSize: 20
+                            horizontalAlignment: Text.AlignHCenter
+                        }
+
+                        Row {
+                            spacing: 20
+                            Button {
+                                text: "Avvia Simulazione"
+                                onClicked: {
+                                    console.log("Simulazione avviata.")
+                                    // Qui puoi aggiungere la logica per avviare la simulazione
+                                }
+                            }
+
+                            Button {
+                                text: "Torna alla schermata iniziale"
+                                onClicked: {
+                                    stackView.pop() // Torna alla schermata iniziale
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
