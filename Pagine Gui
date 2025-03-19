@@ -1,0 +1,202 @@
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+
+ApplicationWindow {
+    visible: true
+    width: 600
+    height: 600
+    title: "Simulazione Canale Estuario"
+
+    StackView {
+        id: stackView
+        anchors.fill: parent
+    }
+
+    Component.onCompleted: {
+        stackView.push(page1)
+    }
+
+    // Pagina 1 - Informazioni Iniziali
+    Component {
+        id: page1
+        Rectangle {
+            width: 600
+            height: 600
+            color: "lightblue"
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 20
+
+                Text {
+                    text: "Informazioni iniziali"
+                    font.pointSize: 20
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
+                TextField {
+                    id: outputFileName
+                    placeholderText: "Nome del file di output"
+                }
+
+                TextField {
+                    id: startDate
+                    placeholderText: "Data e ora di inizio (hh-mm-ss gg/mm/aaaa)"
+                }
+
+                TextField {
+                    id: simulationDuration
+                    placeholderText: "Durata della simulazione (in secondi)"
+                }
+
+                Row {
+                    spacing: 10
+                    Button {
+                        text: "Avanti"
+                        onClicked: {
+                            stackView.push(page2)
+                        }
+                    }
+                    Button {
+                        text: "Esci"
+                        onClicked: {
+                            Qt.quit()
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Pagina 2 - Geometria del canale e condizioni al contorno
+    Component {
+        id: page2
+        Rectangle {
+            width: 600
+            height: 600
+            color: "lightgreen"
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 20
+
+                Text {
+                    text: "Geometria del Canale"
+                    font.pointSize: 20
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
+                TextField {
+                    id: channelDataFile
+                    placeholderText: "Nome del file dati del canale"
+                }
+
+                TextField {
+                    id: crossSectionFile
+                    placeholderText: "Nome file geometria canale"
+                }
+
+                Row {
+                    spacing: 10
+                    Button {
+                        text: "Indietro"
+                        onClicked: {
+                            stackView.pop()
+                        }
+                    }
+                    Button {
+                        text: "Avanti"
+                        onClicked: {
+                            stackView.push(page3)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Pagina 3 - Costanti e metodi di calcolo
+    Component {
+        id: page3
+        Rectangle {
+            width: 600
+            height: 600
+            color: "lightyellow"
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 20
+
+                Text {
+                    text: "Costanti e Metodi di Calcolo"
+                    font.pointSize: 20
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
+                TextField {
+                    id: courantNumber
+                    placeholderText: "Numero Courant (0 - 1)"
+                }
+
+                TextField {
+                    id: flowLimiter
+                    placeholderText: "Limitatore di flusso McComarck (y/n)"
+                }
+
+                Row {
+                    spacing: 10
+                    Button {
+                        text: "Indietro"
+                        onClicked: {
+                            stackView.pop()
+                        }
+                    }
+                    Button {
+                        text: "Avanti"
+                        onClicked: {
+                            stackView.push(page4)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Pagina 4 - Avvio della simulazione
+    Component {
+        id: page4
+        Rectangle {
+            width: 600
+            height: 600
+            color: "lightcoral"
+
+            Column {
+                anchors.centerIn: parent
+                spacing: 20
+
+                Text {
+                    text: "Avvia Simulazione"
+                    font.pointSize: 20
+                    horizontalAlignment: Text.AlignHCenter
+                }
+
+                Row {
+                    spacing: 10
+                    Button {
+                        text: "Avvia"
+                        onClicked: {
+                            console.log("Simulazione Avviata")
+                            // Codice per avviare la simulazione
+                        }
+                    }
+                    Button {
+                        text: "Indietro"
+                        onClicked: {
+                            stackView.pop()
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
