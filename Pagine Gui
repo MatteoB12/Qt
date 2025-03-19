@@ -1,103 +1,167 @@
+TERZO CODICE 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 ApplicationWindow {
     visible: true
     width: 600
-    height: 600
-    title: "Simulazione Canale Estuario"
+    height: 400
+    title: "Simulazione Estuario"
+
+    // Dati di input
+    property string outputFileName
+    property string startDate
+    property string simulationDuration
+    property string timeStep
+    property string outputVars
+
+    property string channelDataFile
+    property string crossSectionFile
+    property string initialCondition
+    property string boundaryConditionUpper
+    property string boundaryConditionLower
+    property string fileDEBC
+    property string fileHydro
+
+    property string courantNumber
+    property string flowLimiter
+    property string flowLimiterEquation
+    property string psiFormula
+    property string deltaValue
+    property string gradientMethod
+    property string sourceTerm
+
+    property string salinityCalculation
+    property string salinityFile
+    property string betaSalinity
+    property string longitudinalDispersionKh
+    property string sedimentTransport
+    property string sedimentTransportEquation
+    property string sedimentFile
 
     StackView {
         id: stackView
         anchors.fill: parent
+        initialItem: page1
     }
 
-    Component.onCompleted: {
-        stackView.push(page1)
-    }
-
-    // Pagina 1 - Informazioni Iniziali
+    // Pagina 1: Inizio Simulazione
     Component {
         id: page1
         Rectangle {
             width: 600
-            height: 600
-            color: "lightblue"
+            height: 400
+            color: "#ffffff"
 
             Column {
                 anchors.centerIn: parent
-                spacing: 20
 
-                Text {
-                    text: "Informazioni iniziali"
-                    font.pointSize: 20
-                    horizontalAlignment: Text.AlignHCenter
-                }
+                Text { text: "Simulazione Estuario" }
 
                 TextField {
                     id: outputFileName
                     placeholderText: "Nome del file di output"
+                    width: parent.width * 0.8
                 }
 
                 TextField {
                     id: startDate
                     placeholderText: "Data e ora di inizio (hh-mm-ss gg/mm/aaaa)"
+                    width: parent.width * 0.8
                 }
 
                 TextField {
                     id: simulationDuration
-                    placeholderText: "Durata della simulazione (in secondi)"
+                    placeholderText: "Durata della simulazione (secondi)"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: timeStep
+                    placeholderText: "Passo temporale (secondi)"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: outputVars
+                    placeholderText: "Variabili di output"
+                    width: parent.width * 0.8
                 }
 
                 Row {
-                    spacing: 10
+                    spacing: 20
                     Button {
-                        text: "Avanti"
+                        text: "Continua"
                         onClicked: {
                             stackView.push(page2)
                         }
                     }
                     Button {
                         text: "Esci"
-                        onClicked: {
-                            Qt.quit()
-                        }
+                        onClicked: Qt.quit()
                     }
                 }
             }
         }
     }
 
-    // Pagina 2 - Geometria del canale e condizioni al contorno
+    // Pagina 2: Geometria del Canale
     Component {
         id: page2
         Rectangle {
             width: 600
-            height: 600
-            color: "lightgreen"
+            height: 400
+            color: "#e0e0e0"
 
             Column {
                 anchors.centerIn: parent
-                spacing: 20
 
-                Text {
-                    text: "Geometria del Canale"
-                    font.pointSize: 20
-                    horizontalAlignment: Text.AlignHCenter
-                }
+                Text { text: "Geometria del Canale" }
 
                 TextField {
                     id: channelDataFile
-                    placeholderText: "Nome del file dati del canale"
+                    placeholderText: "Nome del file di dati del canale"
+                    width: parent.width * 0.8
                 }
 
                 TextField {
                     id: crossSectionFile
-                    placeholderText: "Nome file geometria canale"
+                    placeholderText: "Nome file geometria canale sezioni trasversali"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: initialCondition
+                    placeholderText: "Condizione iniziale (0 = calma)"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: boundaryConditionUpper
+                    placeholderText: "Condizione di confine superiore (0 = flusso aperto)"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: boundaryConditionLower
+                    placeholderText: "Condizione di confine inferiore (2 = elevazione)"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: fileDEBC
+                    placeholderText: "Nome file DEBC"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: fileHydro
+                    placeholderText: "Nome file idroelettrico"
+                    width: parent.width * 0.8
                 }
 
                 Row {
-                    spacing: 10
+                    spacing: 20
                     Button {
                         text: "Indietro"
                         onClicked: {
@@ -105,7 +169,7 @@ ApplicationWindow {
                         }
                     }
                     Button {
-                        text: "Avanti"
+                        text: "Continua"
                         onClicked: {
                             stackView.push(page3)
                         }
@@ -115,36 +179,106 @@ ApplicationWindow {
         }
     }
 
-    // Pagina 3 - Costanti e metodi di calcolo
+    // Pagina 3: Costanti e Metodi di Calcolo
     Component {
         id: page3
         Rectangle {
             width: 600
-            height: 600
-            color: "lightyellow"
+            height: 400
+            color: "#d0d0d0"
 
             Column {
                 anchors.centerIn: parent
-                spacing: 20
 
-                Text {
-                    text: "Costanti e Metodi di Calcolo"
-                    font.pointSize: 20
-                    horizontalAlignment: Text.AlignHCenter
-                }
+                Text { text: "Costanti e Metodi di Calcolo" }
 
                 TextField {
                     id: courantNumber
                     placeholderText: "Numero Courant (0 - 1)"
+                    width: parent.width * 0.8
                 }
 
                 TextField {
                     id: flowLimiter
                     placeholderText: "Limitatore di flusso McComarck (y/n)"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: flowLimiterEquation
+                    placeholderText: "Equazione per il flusso limitatore"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: psiFormula
+                    placeholderText: "Formula Psi (1 o 2)"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: deltaValue
+                    placeholderText: "Valore delta"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: gradientMethod
+                    placeholderText: "Metodo del gradiente di superficie (y/n)"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: sourceTerm
+                    placeholderText: "Termine sorgente saldo (y/n)"
+                    width: parent.width * 0.8
+                }
+
+                // Nuovi campi per salinità e trasporto sedimenti
+                TextField {
+                    id: salinityCalculation
+                    placeholderText: "Calcolare la salinità dell'acqua (y/n)"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: salinityFile
+                    placeholderText: "Nome file salinità"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: betaSalinity
+                    placeholderText: "Costante beta per la salinità"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: longitudinalDispersionKh
+                    placeholderText: "Costante di dispersione longitudinale, Kh"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: sedimentTransport
+                    placeholderText: "Calcolare il trasporto dei sedimenti (y/n)"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: sedimentTransportEquation
+                    placeholderText: "Equazione per il trasporto solido"
+                    width: parent.width * 0.8
+                }
+
+                TextField {
+                    id: sedimentFile
+                    placeholderText: "Nome file proprietà sedimenti"
+                    width: parent.width * 0.8
                 }
 
                 Row {
-                    spacing: 10
+                    spacing: 20
                     Button {
                         text: "Indietro"
                         onClicked: {
@@ -152,9 +286,9 @@ ApplicationWindow {
                         }
                     }
                     Button {
-                        text: "Avanti"
+                        text: "Avvia Simulazione"
                         onClicked: {
-                            stackView.push(page4)
+                            avviaSimulazione()
                         }
                     }
                 }
@@ -162,41 +296,76 @@ ApplicationWindow {
         }
     }
 
-    // Pagina 4 - Avvio della simulazione
+    // Pagina 4: Risultati della Simulazione
     Component {
         id: page4
         Rectangle {
             width: 600
-            height: 600
-            color: "lightcoral"
+            height: 400
+            color: "#c0c0c0"
 
             Column {
                 anchors.centerIn: parent
-                spacing: 20
+
+                Text { text: "Simulazione Completata" }
 
                 Text {
-                    text: "Avvia Simulazione"
-                    font.pointSize: 20
-                    horizontalAlignment: Text.AlignHCenter
+                    id: page4Result
+                    text: "I risultati della simulazione sono mostrati qui."
                 }
 
                 Row {
-                    spacing: 10
+                    spacing: 20
                     Button {
-                        text: "Avvia"
-                        onClicked: {
-                            console.log("Simulazione Avviata")
-                            // Codice per avviare la simulazione
-                        }
-                    }
-                    Button {
-                        text: "Indietro"
-                        onClicked: {
-                            stackView.pop()
-                        }
+                        text: "Esci"
+                        onClicked: Qt.quit()
                     }
                 }
             }
         }
     }
+
+    // Funzione per avviare la simulazione e fare i calcoli
+    function avviaSimulazione() {
+        var durata = parseInt(simulationDuration.text);
+        var passoTemporale = parseInt(timeStep.text);
+        var courant = parseFloat(courantNumber.text);
+
+        // Esegui i calcoli
+        var numPassi = durata / passoTemporale;
+        var velocitaFlusso = courant * numPassi;  // Esempio di calcolo
+
+        // Simulazione salinità
+        var salinità = 0;
+        if (salinityCalculation.text === "y") {
+            var beta = parseFloat(betaSalinity.text);
+            var kh = parseFloat(longitudinalDispersionKh.text);
+            salinità = beta * kh * numPassi;  // Esempio di calcolo salinità
+        }
+
+        // Simulazione trasporto sedimenti
+        var trasportoSedimenti = 0;
+        if (sedimentTransport.text === "y") {
+            trasportoSedimenti = parseFloat(sedimentTransportEquation.text) * numPassi; // Calcolo trasporto
+        }
+
+        // Mostra il risultato finale
+        page4Result.text = "Numero di passi: " + numPassi + "\nVelocità del flusso: " + velocitaFlusso.toFixed(2) + " m/s" +
+                           "\nSalinità: " + salinità.toFixed(2) + " g/L" +
+                           "\nTrasporto Sedimenti: " + trasportoSedimenti.toFixed(2) + " kg/s" +
+                           "\n\nDettagli:\n" +
+                           "Nome del file di output: " + outputFileName.text + "\n" +
+                           "Data di inizio: " + startDate.text + "\n" +
+                           "Durata della simulazione: " + simulationDuration.text + " secondi\n" +
+                           "Passo temporale: " + timeStep.text + " secondi\n" +
+                           "Variabili di output: " + outputVars.text + "\n" +
+                           "File dati canale: " + channelDataFile.text + "\n" +
+                           "Condizione iniziale: " + initialCondition.text + "\n" +
+                           "Condizione di confine superiore: " + boundaryConditionUpper.text + "\n" +
+                           "Condizione di confine inferiore: " + boundaryConditionLower.text;
+
+        // Mostra la pagina dei risultati
+        stackView.push(page4);
+    }
 }
+
