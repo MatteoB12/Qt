@@ -1,0 +1,1014 @@
+import QtQuick 2.15
+import QtQuick.Controls 2.15
+import QtQuick.Layouts 1.15
+import QtQuick.Window 2.15
+import QtGraphicalEffects 1.15
+
+ApplicationWindow {
+    id: mainWindow
+    visible: true
+    visibility: Window.Maximized
+    title: "Simulazione Estuario"
+    color: "#f0f0f0"
+    
+    // Custom styles
+    QtObject {
+        id: style
+        readonly property color primaryColor: "#2196F3"
+        readonly property color accentColor: "#03A9F4"
+        readonly property color darkPrimaryColor: "#1976D2"
+        readonly property color lightBackground: "#ECEFF1"
+        readonly property color darkBackground: "#263238"
+        readonly property color textColor: "#37474F"
+        readonly property color lightTextColor: "#FFFFFF"
+        readonly property int marginSmall: 10
+        readonly property int marginMedium: 20
+        readonly property int marginLarge: 40
+        readonly property int fontSizeTitle: 28
+        readonly property int fontSizeHeading: 22
+        readonly property int fontSizeText: 16
+    }
+    
+    // Custom components
+    Component {
+        id: customTextField
+        TextField {
+            width: 350
+            height: 40
+            font.pixelSize: style.fontSizeText
+            color: style.textColor
+            background: Rectangle {
+                color: "#FFFFFF"
+                radius: 4
+                border.color: parent.focus ? style.primaryColor : "#BDBDBD"
+                border.width: parent.focus ? 2 : 1
+                
+                // Add drop shadow effect
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    horizontalOffset: 0
+                    verticalOffset: 1
+                    radius: 3
+                    samples: 7
+                    color: "#20000000"
+                }
+            }
+        }
+    }
+    
+    Component {
+        id: customButton
+        Button {
+            property bool isPrimary: false
+            implicitWidth: 150
+            implicitHeight: 40
+            
+            contentItem: Text {
+                text: parent.text
+                font.pixelSize: style.fontSizeText
+                color: isPrimary ? style.lightTextColor : style.textColor
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+                elide: Text.ElideRight
+            }
+            
+            background: Rectangle {
+                color: {
+                    if (parent.isPrimary) {
+                        if (parent.pressed) return Qt.darker(style.primaryColor, 1.2)
+                        if (parent.hovered) return Qt.lighter(style.primaryColor, 1.1)
+                        return style.primaryColor
+                    } else {
+                        if (parent.pressed) return "#E0E0E0"
+                        if (parent.hovered) return "#F5F5F5"
+                        return "#FFFFFF"
+                    }
+                }
+                radius: 4
+                border.color: parent.isPrimary ? "transparent" : "#BDBDBD"
+                border.width: 1
+                
+                // Add drop shadow
+                layer.enabled: true
+                layer.effect: DropShadow {
+                    horizontalOffset: 0
+                    verticalOffset: 2
+                    radius: 5
+                    samples: 11
+                    color: "#30000000"
+                }
+            }
+        }
+    }
+    
+    // Main stack view for navigation
+    StackView {
+        id: stackView
+        anchors.fill: parent
+        initialItem: menuPrincipale
+        
+        // Add transition animations
+        pushEnter: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 300
+            }
+        }
+        pushExit: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 1
+                to: 0
+                duration: 300
+            }
+        }
+        popEnter: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 0
+                to: 1
+                duration: 300
+            }
+        }
+        popExit: Transition {
+            PropertyAnimation {
+                property: "opacity"
+                from: 1
+                to: 0
+                duration: 300
+            }
+        }
+    }
+    
+    // Menu Principale (Main Menu)
+    Component {
+        id: menuPrincipale
+        Item {
+            anchors.fill: parent
+            
+            // Background with gradient
+            Rectangle {
+                anchors.fill: parent
+                gradient: Gradient {
+                    GradientStop { position: 0.0; color: style.primaryColor }
+                    GradientStop { position: 1.0; color: style.darkPrimaryColor }
+                }
+                
+                // Water animation elements
+                Row {
+                    anchors.bottom: parent.bottom
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    
+                    Repeater {
+                        model: 20
+                        
+                        Rectangle {
+                            width: parent.width / 20
+                            height: 80 + (index % 3) * 15
+                            color: Qt.rgba(1, 1, 1, 0.1)
+                            radius: 50
+                            y: 10 * Math.sin((index / 5) + waveAnimation.running)
+                            
+                            NumberAnimation on y {
+                                id: waveAnimation
+                                from: 0
+                                to: 10
+                                duration: 2000 + (index * 200)
+                                loops: Animation.Infinite
+                                easing.type: Easing.InOutQuad
+                                running: true
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Content
+            ColumnLayout {
+                anchors.centerIn: parent
+                spacing: style.marginLarge
+                
+                // Logo/Title
+                Rectangle {
+                    Layout.alignment: Qt.AlignHCenter
+                    width: 120
+                    height: 120
+                    radius: 60
+                    color: "white"
+                    
+                    Text {
+                        anchors.centerIn: parent
+                        text: "🌊"
+                        font.pixelSize: 60
+                    }
+                    
+                    layer.enabled: true
+                    layer.effect: DropShadow {
+                        horizontalOffset: 0
+                        verticalOffset: 3
+                        radius: 8
+                        samples: 17
+                        color: "#40000000"
+                    }
+                }
+                
+                Text {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "Simulazione Estuario"
+                    font.pixelSize: style.fontSizeTitle
+                    font.bold: true
+                    color: "white"
+                }
+                
+                Text {
+                    Layout.alignment: Qt.AlignHCenter
+                    text: "Modello di simulazione per lo studio degli estuari"
+                    font.pixelSize: style.fontSizeText
+                    color: "white"
+                    opacity: 0.9
+                }
+                
+                // Buttons
+                ColumnLayout {
+                    Layout.alignment: Qt.AlignHCenter
+                    spacing: style.marginMedium
+                    
+                    Loader {
+                        Layout.alignment: Qt.AlignHCenter
+                        sourceComponent: customButton
+                        onLoaded: {
+                            item.text = "Avvia Simulazione"
+                            item.isPrimary = true
+                            item.implicitWidth = 250
+                            item.onClicked = function() { stackView.push(simulazioneEstuario) }
+                        }
+                    }
+                    
+                    Loader {
+                        Layout.alignment: Qt.AlignHCenter
+                        sourceComponent: customButton
+                        onLoaded: {
+                            item.text = "Informazioni"
+                            item.isPrimary = false
+                            item.implicitWidth = 250
+                            item.onClicked = function() { infoDialog.open() }
+                        }
+                    }
+                    
+                    Loader {
+                        Layout.alignment: Qt.AlignHCenter
+                        sourceComponent: customButton
+                        onLoaded: {
+                            item.text = "Esci"
+                            item.isPrimary = false
+                            item.implicitWidth = 250
+                            item.onClicked = function() { Qt.quit() }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Simulazione Estuario (Estuary Simulation)
+    Component {
+        id: simulazioneEstuario
+        Rectangle {
+            anchors.fill: parent
+            color: style.lightBackground
+            
+            // Header
+            Rectangle {
+                id: header
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 70
+                color: style.primaryColor
+                
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.leftMargin: style.marginMedium
+                    anchors.rightMargin: style.marginMedium
+                    
+                    Text {
+                        text: "Configurazione Simulazione"
+                        font.pixelSize: style.fontSizeHeading
+                        font.bold: true
+                        color: style.lightTextColor
+                    }
+                    
+                    Item { Layout.fillWidth: true }
+                    
+                    Text {
+                        text: "Fase 1/3"
+                        font.pixelSize: style.fontSizeText
+                        color: style.lightTextColor
+                    }
+                }
+            }
+            
+            // Progress bar
+            Rectangle {
+                anchors.top: header.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 4
+                
+                Rectangle {
+                    width: parent.width * 0.33
+                    height: parent.height
+                    color: style.accentColor
+                }
+            }
+            
+            // Content
+            Item {
+                anchors.top: header.bottom
+                anchors.bottom: footer.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: style.marginLarge
+                
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: style.marginMedium
+                    width: Math.min(parent.width, 500)
+                    
+                    // Input fields
+                    Item {
+                        Layout.fillWidth: true
+                        height: outputLabel.height
+                        
+                        Text {
+                            id: outputLabel
+                            text: "Nome del file di output:"
+                            font.pixelSize: style.fontSizeText
+                            color: style.textColor
+                        }
+                    }
+                    
+                    Loader {
+                        id: outputFileField
+                        Layout.fillWidth: true
+                        sourceComponent: customTextField
+                        onLoaded: {
+                            item.placeholderText = "estuario_risultati.dat"
+                        }
+                    }
+                    
+                    Item {
+                        Layout.fillWidth: true
+                        height: startDateLabel.height
+                        Layout.topMargin: style.marginSmall
+                        
+                        Text {
+                            id: startDateLabel
+                            text: "Data e ora di inizio:"
+                            font.pixelSize: style.fontSizeText
+                            color: style.textColor
+                        }
+                    }
+                    
+                    Loader {
+                        id: startDateField
+                        Layout.fillWidth: true
+                        sourceComponent: customTextField
+                        onLoaded: {
+                            item.placeholderText = "12-00-00 01/01/2024"
+                        }
+                    }
+                    
+                    Item {
+                        Layout.fillWidth: true
+                        height: durationLabel.height
+                        Layout.topMargin: style.marginSmall
+                        
+                        Text {
+                            id: durationLabel
+                            text: "Durata della simulazione (secondi):"
+                            font.pixelSize: style.fontSizeText
+                            color: style.textColor
+                        }
+                    }
+                    
+                    Loader {
+                        id: durationField
+                        Layout.fillWidth: true
+                        sourceComponent: customTextField
+                        onLoaded: {
+                            item.placeholderText = "86400"
+                            item.validator: IntValidator { bottom: 1 }
+                        }
+                    }
+                    
+                    Item {
+                        Layout.fillWidth: true
+                        height: timeStepLabel.height
+                        Layout.topMargin: style.marginSmall
+                        
+                        Text {
+                            id: timeStepLabel
+                            text: "Passo temporale (secondi):"
+                            font.pixelSize: style.fontSizeText
+                            color: style.textColor
+                        }
+                    }
+                    
+                    Loader {
+                        id: timeStepField
+                        Layout.fillWidth: true
+                        sourceComponent: customTextField
+                        onLoaded: {
+                            item.placeholderText = "60"
+                            item.validator: IntValidator { bottom: 1 }
+                        }
+                    }
+                }
+            }
+            
+            // Footer with buttons
+            Rectangle {
+                id: footer
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 70
+                color: "white"
+                
+                // Add shadow above the footer
+                Rectangle {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.top
+                    height: 5
+                    
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#10000000" }
+                        GradientStop { position: 1.0; color: "transparent" }
+                    }
+                }
+                
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: style.marginMedium
+                    spacing: style.marginMedium
+                    
+                    Loader {
+                        sourceComponent: customButton
+                        onLoaded: {
+                            item.text = "Indietro"
+                            item.isPrimary = false
+                            item.onClicked = function() { stackView.pop() }
+                        }
+                    }
+                    
+                    Item { Layout.fillWidth: true }
+                    
+                    Loader {
+                        sourceComponent: customButton
+                        onLoaded: {
+                            item.text = "Continua"
+                            item.isPrimary = true
+                            item.onClicked = function() { stackView.push(geometriaCanale) }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Geometria del Canale (Channel Geometry)
+    Component {
+        id: geometriaCanale
+        Rectangle {
+            anchors.fill: parent
+            color: style.lightBackground
+            
+            // Header
+            Rectangle {
+                id: header
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 70
+                color: style.primaryColor
+                
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.leftMargin: style.marginMedium
+                    anchors.rightMargin: style.marginMedium
+                    
+                    Text {
+                        text: "Geometria del Canale"
+                        font.pixelSize: style.fontSizeHeading
+                        font.bold: true
+                        color: style.lightTextColor
+                    }
+                    
+                    Item { Layout.fillWidth: true }
+                    
+                    Text {
+                        text: "Fase 2/3"
+                        font.pixelSize: style.fontSizeText
+                        color: style.lightTextColor
+                    }
+                }
+            }
+            
+            // Progress bar
+            Rectangle {
+                anchors.top: header.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 4
+                
+                Rectangle {
+                    width: parent.width * 0.66
+                    height: parent.height
+                    color: style.accentColor
+                }
+            }
+            
+            // Content
+            Item {
+                anchors.top: header.bottom
+                anchors.bottom: footer.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: style.marginLarge
+                
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: style.marginMedium
+                    width: Math.min(parent.width, 500)
+                    
+                    // Visual representation of channel
+                    Rectangle {
+                        Layout.fillWidth: true
+                        height: 150
+                        color: "white"
+                        radius: 4
+                        
+                        Canvas {
+                            anchors.fill: parent
+                            anchors.margins: 10
+                            
+                            onPaint: {
+                                var ctx = getContext("2d");
+                                ctx.clearRect(0, 0, width, height);
+                                
+                                // Draw water
+                                var gradient = ctx.createLinearGradient(0, 0, 0, height);
+                                gradient.addColorStop(0, "#90CAF9");
+                                gradient.addColorStop(1, "#1976D2");
+                                ctx.fillStyle = gradient;
+                                
+                                // Draw channel shape
+                                ctx.beginPath();
+                                ctx.moveTo(0, height * 0.5);
+                                ctx.bezierCurveTo(
+                                    width * 0.25, height * 0.7,
+                                    width * 0.5, height * 0.6,
+                                    width * 0.75, height * 0.8
+                                );
+                                ctx.lineTo(width, height * 0.8);
+                                ctx.lineTo(width, height);
+                                ctx.lineTo(0, height);
+                                ctx.closePath();
+                                ctx.fill();
+                                
+                                // Draw ground
+                                ctx.fillStyle = "#795548";
+                                ctx.beginPath();
+                                ctx.moveTo(0, height * 0.5);
+                                ctx.bezierCurveTo(
+                                    width * 0.25, height * 0.7,
+                                    width * 0.5, height * 0.6,
+                                    width * 0.75, height * 0.8
+                                );
+                                ctx.lineTo(width, height * 0.8);
+                                ctx.lineTo(width, height);
+                                ctx.lineTo(0, height);
+                                ctx.closePath();
+                                ctx.stroke();
+                            }
+                        }
+                        
+                        Text {
+                            anchors.top: parent.top
+                            anchors.horizontalCenter: parent.horizontalCenter
+                            anchors.topMargin: 5
+                            text: "Visualizzazione del Canale"
+                            font.pixelSize: style.fontSizeText - 2
+                            color: style.textColor
+                        }
+                    }
+                    
+                    // Input fields
+                    Item {
+                        Layout.fillWidth: true
+                        height: channelDataLabel.height
+                        Layout.topMargin: style.marginSmall
+                        
+                        Text {
+                            id: channelDataLabel
+                            text: "File di dati del canale:"
+                            font.pixelSize: style.fontSizeText
+                            color: style.textColor
+                        }
+                    }
+                    
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: style.marginSmall
+                        
+                        Loader {
+                            id: channelDataFileField
+                            Layout.fillWidth: true
+                            sourceComponent: customTextField
+                            onLoaded: {
+                                item.placeholderText = "canale_data.txt"
+                            }
+                        }
+                        
+                        Loader {
+                            sourceComponent: customButton
+                            onLoaded: {
+                                item.text = "Sfoglia"
+                                item.isPrimary = false
+                                item.implicitWidth = 100
+                            }
+                        }
+                    }
+                    
+                    Item {
+                        Layout.fillWidth: true
+                        height: crossSectionLabel.height
+                        Layout.topMargin: style.marginSmall
+                        
+                        Text {
+                            id: crossSectionLabel
+                            text: "File sezioni trasversali:"
+                            font.pixelSize: style.fontSizeText
+                            color: style.textColor
+                        }
+                    }
+                    
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: style.marginSmall
+                        
+                        Loader {
+                            id: crossSectionFileField
+                            Layout.fillWidth: true
+                            sourceComponent: customTextField
+                            onLoaded: {
+                                item.placeholderText = "sezioni_trasversali.txt"
+                            }
+                        }
+                        
+                        Loader {
+                            sourceComponent: customButton
+                            onLoaded: {
+                                item.text = "Sfoglia"
+                                item.isPrimary = false
+                                item.implicitWidth = 100
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Footer with buttons
+            Rectangle {
+                id: footer
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 70
+                color: "white"
+                
+                // Add shadow above the footer
+                Rectangle {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.top
+                    height: 5
+                    
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#10000000" }
+                        GradientStop { position: 1.0; color: "transparent" }
+                    }
+                }
+                
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: style.marginMedium
+                    spacing: style.marginMedium
+                    
+                    Loader {
+                        sourceComponent: customButton
+                        onLoaded: {
+                            item.text = "Indietro"
+                            item.isPrimary = false
+                            item.onClicked = function() { stackView.pop() }
+                        }
+                    }
+                    
+                    Item { Layout.fillWidth: true }
+                    
+                    Loader {
+                        sourceComponent: customButton
+                        onLoaded: {
+                            item.text = "Continua"
+                            item.isPrimary = true
+                            item.onClicked = function() { stackView.push(costantiMetodi) }
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    // Costanti e Metodi di Calcolo (Constants and Calculation Methods)
+    Component {
+        id: costantiMetodi
+        Rectangle {
+            anchors.fill: parent
+            color: style.lightBackground
+            
+            // Header
+            Rectangle {
+                id: header
+                anchors.top: parent.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 70
+                color: style.primaryColor
+                
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.leftMargin: style.marginMedium
+                    anchors.rightMargin: style.marginMedium
+                    
+                    Text {
+                        text: "Costanti e Metodi di Calcolo"
+                        font.pixelSize: style.fontSizeHeading
+                        font.bold: true
+                        color: style.lightTextColor
+                    }
+                    
+                    Item { Layout.fillWidth: true }
+                    
+                    Text {
+                        text: "Fase 3/3"
+                        font.pixelSize: style.fontSizeText
+                        color: style.lightTextColor
+                    }
+                }
+            }
+            
+            // Progress bar
+            Rectangle {
+                anchors.top: header.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 4
+                
+                Rectangle {
+                    width: parent.width
+                    height: parent.height
+                    color: style.accentColor
+                }
+            }
+            
+            // Content
+            Item {
+                anchors.top: header.bottom
+                anchors.bottom: footer.top
+                anchors.left: parent.left
+                anchors.right: parent.right
+                anchors.margins: style.marginLarge
+                
+                ColumnLayout {
+                    anchors.centerIn: parent
+                    spacing: style.marginMedium
+                    width: Math.min(parent.width, 500)
+                    
+                    // Input fields
+                    Item {
+                        Layout.fillWidth: true
+                        height: courantLabel.height
+                        
+                        Text {
+                            id: courantLabel
+                            text: "Numero di Courant:"
+                            font.pixelSize: style.fontSizeText
+                            color: style.textColor
+                        }
+                    }
+                    
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 5
+                        
+                        Loader {
+                            id: courantField
+                            Layout.fillWidth: true
+                            sourceComponent: customTextField
+                            onLoaded: {
+                                item.placeholderText = "0.8"
+                                item.validator: DoubleValidator { bottom: 0; top: 1 }
+                            }
+                        }
+                        
+                        Slider {
+                            id: courantSlider
+                            Layout.fillWidth: true
+                            from: 0
+                            to: 1
+                            stepSize: 0.01
+                            value: 0.8
+                            onValueChanged: {
+                                if (courantField.item) {
+                                    courantField.item.text = value.toFixed(2);
+                                }
+                            }
+                        }
+                        
+                        Text {
+                            text: "Il numero di Courant determina la stabilità della simulazione numerica. Valori più bassi sono più stabili ma richiedono più calcoli."
+                            font.pixelSize: style.fontSizeText - 2
+                            color: style.textColor
+                            opacity: 0.7
+                            wrapMode: Text.WordWrap
+                            Layout.fillWidth: true
+                        }
+                    }
+                    
+                    Item {
+                        Layout.fillWidth: true
+                        height: salinityLabel.height
+                        Layout.topMargin: style.marginSmall
+                        
+                        Text {
+                            id: salinityLabel
+                            text: "Calcolo della salinità:"
+                            font.pixelSize: style.fontSizeText
+                            color: style.textColor
+                        }
+                    }
+                    
+                    RowLayout {
+                        Layout.fillWidth: true
+                        spacing: style.marginSmall
+                        
+                        CheckBox {
+                            id: salinityCheckBox
+                            text: "Attiva calcolo salinità"
+                            checked: true
+                        }
+                    }
+                    
+                    // Advanced parameters collapsible section
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        spacing: 0
+                        
+                        Rectangle {
+                            Layout.fillWidth: true
+                            height: 40
+                            color: "#E0E0E0"
+                            radius: 4
+                            
+                            RowLayout {
+                                anchors.fill: parent
+                                anchors.margins: style.marginSmall
+                                
+                                Text {
+                                    text: "Parametri avanzati"
+                                    font.pixelSize: style.fontSizeText
+                                    color: style.textColor
+                                }
+                                
+                                Item { Layout.fillWidth: true }
+                                
+                                Text {
+                                    text: advancedSection.visible ? "▼" : "▶"
+                                    font.pixelSize: style.fontSizeText
+                                    color: style.textColor
+                                }
+                            }
+                            
+                            MouseArea {
+                                anchors.fill: parent
+                                onClicked: advancedSection.visible = !advancedSection.visible
+                            }
+                        }
+                        
+                        Rectangle {
+                            id: advancedSection
+                            Layout.fillWidth: true
+                            height: advancedSectionColumn.height + style.marginMedium * 2
+                            color: "#F5F5F5"
+                            visible: false
+                            
+                            ColumnLayout {
+                                id: advancedSectionColumn
+                                anchors.top: parent.top
+                                anchors.left: parent.left
+                                anchors.right: parent.right
+                                anchors.margins: style.marginMedium
+                                spacing: style.marginMedium
+                                
+                                RowLayout {
+                                    Layout.fillWidth: true
+                                    spacing: style.marginSmall
+                                    
+                                    Text {
+                                        text: "Metodo di calcolo:"
+                                        font.pixelSize: style.fontSizeText
+                                        color: style.textColor
+                                        Layout.preferredWidth: 150
+                                    }
+                                    
+                                    ComboBox {
+                                        Layout.fillWidth: true
+                                        model: ["Implicito", "Semi-implicito", "Esplicito"]
+                                        currentIndex: 1
+                                    }
+                                }
+                                
+                                RowLayout {
+                                    Layout.fillWidth: true
+                                    spacing: style.marginSmall
+                                    
+                                    Text {
+                                        text: "Viscosità turbolenta:"
+                                        font.pixelSize: style.fontSizeText
+                                        color: style.textColor
+                                        Layout.preferredWidth: 150
+                                    }
+                                    
+                                    Loader {
+                                        Layout.fillWidth: true
+                                        sourceComponent: customTextField
+                                        onLoaded: {
+                                            item.placeholderText = "0.001"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            // Footer with buttons
+            Rectangle {
+                id: footer
+                anchors.bottom: parent.bottom
+                anchors.left: parent.left
+                anchors.right: parent.right
+                height: 70
+                color: "white"
+                
+                // Add shadow above the footer
+                Rectangle {
+                    anchors.left: parent.left
+                    anchors.right: parent.right
+                    anchors.bottom: parent.top
+                    height: 5
+                    
+                    gradient: Gradient {
+                        GradientStop { position: 0.0; color: "#10000000" }
+                        GradientStop { position: 1.0; color: "transparent" }
+                    }
+                }
+                
+                RowLayout {
+                    anchors.fill: parent
+                    anchors.margins: style.marginMedium
+                    spacing: style.marginMedium
+                    
+                    Loader {
+                        sourceComponent: customButton
+                        onLoaded: {
+                            item.text = "Indietro"
+                            item.isPrimary = false
+                            item.onClicked = function() { stackView.pop() }
+                        }
+                    }
+                    
+                    Item { Layout.fillWidth: true }
+                    
+                    Loader {
+                        sourceComponent: customButton
+                        onLoaded: {
+                            item.text = "Avvia Simulazione"
+                            item.isPrimary = true
+                            item.onClicked = function() {
