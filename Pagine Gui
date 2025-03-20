@@ -345,3 +345,4 @@ ApplicationWindow {
         stackView.push(page4);
     }
 }
+
