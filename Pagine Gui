@@ -1,12 +1,13 @@
-TERZO CODICE 
 import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 ApplicationWindow {
-    visible: true
-    width: 600
-    height: 400
+
+ visible: Window.Maximed
     title: "Simulazione Estuario"
+
+    // Aggiungi questa linea per impostare la finestra a schermo intero
+    visibility: Window.Maximized  // Imposta la finestra a schermo intero (senza duplicazione con 'visible')
 
     // Dati di input
     property string outputFileName
@@ -49,8 +50,7 @@ ApplicationWindow {
     Component {
         id: page1
         Rectangle {
-            width: 600
-            height: 400
+         visible: Window.Maximed
             color: "#ffffff"
 
             Column {
@@ -109,8 +109,7 @@ ApplicationWindow {
     Component {
         id: page2
         Rectangle {
-            width: 600
-            height: 400
+             visible: Window.Maximed
             color: "#e0e0e0"
 
             Column {
@@ -174,6 +173,10 @@ ApplicationWindow {
                             stackView.push(page3)
                         }
                     }
+                    Button {
+                        text: "Esci"
+                        onClicked: Qt.quit()
+                    }
                 }
             }
         }
@@ -183,8 +186,7 @@ ApplicationWindow {
     Component {
         id: page3
         Rectangle {
-            width: 600
-            height: 400
+         visible: Window.Maximed
             color: "#d0d0d0"
 
             Column {
@@ -291,31 +293,6 @@ ApplicationWindow {
                             avviaSimulazione()
                         }
                     }
-                }
-            }
-        }
-    }
-
-    // Pagina 4: Risultati della Simulazione
-    Component {
-        id: page4
-        Rectangle {
-            width: 600
-            height: 400
-            color: "#c0c0c0"
-
-            Column {
-                anchors.centerIn: parent
-
-                Text { text: "Simulazione Completata" }
-
-                Text {
-                    id: page4Result
-                    text: "I risultati della simulazione sono mostrati qui."
-                }
-
-                Row {
-                    spacing: 20
                     Button {
                         text: "Esci"
                         onClicked: Qt.quit()
@@ -368,4 +345,3 @@ ApplicationWindow {
         stackView.push(page4);
     }
 }
-
