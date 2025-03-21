@@ -5,7 +5,7 @@ ApplicationWindow {
     visible: Window.Maximized
     title: "Simulazione Estuario"
 
-    visibility: Window.Maximized  // Imposta la finestra a schermo intero (senza duplicazione con 'visible')
+    visibility: Window.Maximized
 
     property string outputFileName
     property string startDate
