@@ -5,10 +5,8 @@ ApplicationWindow {
     visible: Window.Maximized
     title: "Simulazione Estuario"
 
-    // Aggiungi questa linea per impostare la finestra a schermo intero
     visibility: Window.Maximized  // Imposta la finestra a schermo intero (senza duplicazione con 'visible')
 
-    // Dati di input
     property string outputFileName
     property string startDate
     property string simulationDuration
@@ -45,7 +43,6 @@ ApplicationWindow {
         initialItem: page1
     }
 
-    // Pagina 1: Inizio Simulazione
     Component {
         id: page1
         Rectangle {
@@ -95,7 +92,6 @@ ApplicationWindow {
         }
     }
 
-    // Pagina 2: Geometria del Canale
     Component {
         id: page2
         Rectangle {
@@ -119,7 +115,6 @@ ApplicationWindow {
                     width: parent.width * 0.8
                 }
 
-                // RadioButtons per la condizione di confine
                 Text { text: "Condizione di confine superiore (0 = flusso aperto, 1 = riflettente, 2 = elevazione)" }
                 Row {
                     spacing: 10
@@ -170,7 +165,6 @@ ApplicationWindow {
         }
     }
 
-    // Pagina 3: Costanti e Metodi di Calcolo
     Component {
         id: page3
         Rectangle {
@@ -185,7 +179,6 @@ ApplicationWindow {
                     width: parent.width * 0.8
                 }
 
-                // RadioButton per McComarck Limiter Flux
                 Text { text: "Limitatore di flusso McComarck (y/n)" }
                 Row {
                     spacing: 10
@@ -193,7 +186,7 @@ ApplicationWindow {
                     RadioButton { text: "No"; checked: flowLimiter === "n"; onCheckedChanged: flowLimiter = "n" }
                 }
 
-                // ComboBox per Equazione Limitatore di Flusso
+  
                 Text { text: "Equazione per il flusso limitatore" }
                 ComboBox {
                     id: flowLimiterEquation
@@ -202,7 +195,7 @@ ApplicationWindow {
                     onCurrentIndexChanged: flowLimiterEquation = model[currentIndex]
                 }
 
-                // ComboBox per la selezione della Formula Psi
+            
                 Text { text: "Formula Psi" }
                 ComboBox {
                     id: psiFormulaSelector
@@ -211,7 +204,6 @@ ApplicationWindow {
                     onCurrentIndexChanged: psiFormula = model[currentIndex].split(" = ")[0]
                 }
 
-                // Mostra il valore selezionato in una TextField
                 TextField {
                     id: psiFormulaDisplay
                     text: "Formula Psi selezionata: " + psiFormula
@@ -225,7 +217,6 @@ ApplicationWindow {
                     width: parent.width * 0.8
                 }
 
-                // RadioButton per Metodo Gradiente Superficie
                 Text { text: "Metodo del gradiente di superficie (y/n)" }
                 Row {
                     spacing: 10
@@ -233,7 +224,6 @@ ApplicationWindow {
                     RadioButton { text: "No"; checked: gradientMethod === "n"; onCheckedChanged: gradientMethod = "n" }
                 }
 
-                // RadioButton per Sorgente
                 Text { text: "Termine sorgente saldo (y/n)" }
                 Row {
                     spacing: 10
@@ -257,7 +247,6 @@ ApplicationWindow {
                     width: parent.width * 0.8
                 }
 
-                // RadioButton per Trasporto Sedimenti
                 Text { text: "Calcolare il trasporto dei sedimenti (y/n)" }
                 Row {
                     spacing: 10
@@ -299,7 +288,7 @@ ApplicationWindow {
         }
     }
 
-    // Pagina 4: Risultati della Simulazione
+
     Component {
         id: page4
         Rectangle {
@@ -308,7 +297,7 @@ ApplicationWindow {
                 anchors.centerIn: parent
                 Text { text: "Risultati della Simulazione" }
 
-                // Mostra i risultati finali
+
                 TextArea {
                     id: page4Result
                     text: ""
@@ -334,13 +323,13 @@ ApplicationWindow {
         }
     }
 
-    // Funzione per avviare la simulazione e fare i calcoli
+   
     function avviaSimulazione() {
         var durata = parseInt(simulationDuration.text);
         var passoTemporale = parseInt(timeStep.text);
         var courant = parseFloat(courantNumber.text);
 
-        // Calcoli di simulazione
+       
         var numPassi = durata / passoTemporale;
         var velocitaFlusso = courant * numPassi;  // Esempio di calcolo velocità
 
@@ -356,7 +345,6 @@ ApplicationWindow {
             trasportoSedimenti = parseFloat(sedimentTransportEquation.text) * numPassi;  // Calcolo trasporto sedimenti
         }
 
-        // Risultato finale visualizzato nella pagina 4
         page4Result.text = "Numero di passi: " + numPassi + "\nVelocità del flusso: " + velocitaFlusso.toFixed(2) + " m/s" +
                            "\nSalinità: " + salinità.toFixed(2) + " g/L" +
                            "\nTrasporto Sedimenti: " + trasportoSedimenti.toFixed(2) + " kg/s" +
@@ -371,7 +359,6 @@ ApplicationWindow {
                            "Condizione di confine superiore: " + boundaryConditionUpper + "\n" +
                            "Condizione di confine inferiore: " + boundaryConditionLower;
 
-        // Passa alla pagina 4 per visualizzare i risultati
         stackView.push(page4);
     }
 }
