@@ -2,7 +2,7 @@ import QtQuick 2.15
 import QtQuick.Controls 2.15
 
 ApplicationWindow {
-    visible: Window.Maximized
+    visible: true
     title: "Simulazione Estuario"
 
     visibility: Window.Maximized
@@ -49,32 +49,47 @@ ApplicationWindow {
             color: "#ffffff"
             Column {
                 anchors.centerIn: parent
-                Text { text: "Simulazione Estuario" }
+                spacing: 10  // Ridotto lo spazio tra gli elementi
+                padding: 20  // Aggiunto un po' di padding ai bordi per evitare che gli elementi tocchino i bordi della pagina
+                width: parent.width * 0.9  // Fai in modo che la larghezza occupi il 90% dello schermo per non essere troppo ampio
+
+                Text { text: "Simulazione Estuario"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
+
                 TextField {
                     id: outputFileName
                     placeholderText: "Nome del file di output"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 TextField {
                     id: startDate
                     placeholderText: "Data e ora di inizio (hh-mm-ss gg/mm/aaaa)"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 TextField {
                     id: simulationDuration
                     placeholderText: "Durata della simulazione (secondi)"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 TextField {
                     id: timeStep
                     placeholderText: "Passo temporale (secondi)"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 TextField {
                     id: outputVars
                     placeholderText: "Variabili di output"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 Row {
                     spacing: 20
                     Button {
@@ -92,27 +107,38 @@ ApplicationWindow {
         }
     }
 
+
     Component {
         id: page2
         Rectangle {
             color: "#e0e0e0"
             Column {
                 anchors.centerIn: parent
-                Text { text: "Geometria del Canale" }
+                spacing: 10  // Ridotto lo spazio tra gli elementi
+                padding: 20  // Aggiunto un po' di padding ai bordi per evitare che gli elementi tocchino i bordi della pagina
+                width: parent.width * 0.9  // Fai in modo che la larghezza occupi il 90% dello schermo per non essere troppo ampio
+
+                Text { text: "Geometria del Canale"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
+
                 TextField {
                     id: channelDataFile
                     placeholderText: "Nome del file di dati del canale"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 TextField {
                     id: crossSectionFile
                     placeholderText: "Nome file geometria canale sezioni trasversali"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 TextField {
                     id: initialCondition
                     placeholderText: "Condizione iniziale (0 = calma)"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
 
                 Text { text: "Condizione di confine superiore (0 = flusso aperto, 1 = riflettente, 2 = elevazione)" }
@@ -135,11 +161,14 @@ ApplicationWindow {
                     id: fileDEBC
                     placeholderText: "Nome file DEBC"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 TextField {
                     id: fileHydro
                     placeholderText: "Nome file idroelettrico"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
 
                 Row {
@@ -165,18 +194,24 @@ ApplicationWindow {
         }
     }
 
+
     Component {
         id: page3
         Rectangle {
             color: "#d0d0d0"
             Column {
                 anchors.centerIn: parent
-                Text { text: "Costanti e Metodi di Calcolo" }
+                spacing: 10  // Ridotto lo spazio tra gli elementi
+                padding: 20  // Aggiunto un po' di padding ai bordi per evitare che gli elementi tocchino i bordi della pagina
+                width: parent.width * 0.9  // Fai in modo che la larghezza occupi il 90% dello schermo per non essere troppo ampio
+
+                Text { text: "Costanti e Metodi di Calcolo"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
 
                 TextField {
                     id: courantNumber
                     placeholderText: "Numero Courant (0 - 1)"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
 
                 Text { text: "Limitatore di flusso McComarck (y/n)" }
@@ -186,20 +221,20 @@ ApplicationWindow {
                     RadioButton { text: "No"; checked: flowLimiter === "n"; onCheckedChanged: flowLimiter = "n" }
                 }
 
-  
                 Text { text: "Equazione per il flusso limitatore" }
                 ComboBox {
                     id: flowLimiterEquation
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                     model: ["MinMod", "Roe", "Van Leer", "Van Albada"]
                     onCurrentIndexChanged: flowLimiterEquation = model[currentIndex]
                 }
 
-            
                 Text { text: "Formula Psi" }
                 ComboBox {
                     id: psiFormulaSelector
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                     model: ["1 = Garcia-Navarro", "2 = Tseng"]
                     onCurrentIndexChanged: psiFormula = model[currentIndex].split(" = ")[0]
                 }
@@ -208,6 +243,7 @@ ApplicationWindow {
                     id: psiFormulaDisplay
                     text: "Formula Psi selezionata: " + psiFormula
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                     readOnly: true
                 }
 
@@ -215,6 +251,7 @@ ApplicationWindow {
                     id: deltaValue
                     placeholderText: "Valore delta"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
 
                 Text { text: "Metodo del gradiente di superficie (y/n)" }
@@ -235,16 +272,21 @@ ApplicationWindow {
                     id: salinityFile
                     placeholderText: "Nome file salinità"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 TextField {
                     id: betaSalinity
                     placeholderText: "Costante beta per la salinità"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 TextField {
                     id: longitudinalDispersionKh
                     placeholderText: "Costante di dispersione longitudinale, Kh"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
 
                 Text { text: "Calcolare il trasporto dei sedimenti (y/n)" }
@@ -258,11 +300,14 @@ ApplicationWindow {
                     id: sedimentTransportEquation
                     placeholderText: "Equazione per il trasporto solido"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
+
                 TextField {
                     id: sedimentFile
                     placeholderText: "Nome file proprietà sedimenti"
                     width: parent.width * 0.8
+                    height: 40  // Altezza ridotta
                 }
 
                 Row {
@@ -295,8 +340,11 @@ ApplicationWindow {
             color: "#f0f0f0"
             Column {
                 anchors.centerIn: parent
-                Text { text: "Risultati della Simulazione" }
+                spacing: 10  // Ridotto lo spazio tra gli elementi
+                padding: 20  // Aggiunto un po' di padding ai bordi per evitare che gli elementi tocchino i bordi della pagina
+                width: parent.width * 0.9  // Fai in modo che la larghezza occupi il 90% dello schermo per non essere troppo ampio
 
+                Text { text: "Risultati della Simulazione"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
 
                 TextArea {
                     id: page4Result
@@ -323,26 +371,24 @@ ApplicationWindow {
         }
     }
 
-   
     function avviaSimulazione() {
         var durata = parseInt(simulationDuration.text);
         var passoTemporale = parseInt(timeStep.text);
         var courant = parseFloat(courantNumber.text);
 
-       
         var numPassi = durata / passoTemporale;
-        var velocitaFlusso = courant * numPassi;  // Esempio di calcolo velocità
+        var velocitaFlusso = courant * numPassi;
 
         var salinità = 0;
         if (salinityCalculation === "y") {
             var beta = parseFloat(betaSalinity.text);
             var kh = parseFloat(longitudinalDispersionKh.text);
-            salinità = beta * kh * numPassi;  // Calcolo salinità
+            salinità = beta * kh * numPassi;
         }
 
         var trasportoSedimenti = 0;
         if (sedimentTransport === "y") {
-            trasportoSedimenti = parseFloat(sedimentTransportEquation.text) * numPassi;  // Calcolo trasporto sedimenti
+            trasportoSedimenti = parseFloat(sedimentTransportEquation.text) * numPassi;
         }
 
         page4Result.text = "Numero di passi: " + numPassi + "\nVelocità del flusso: " + velocitaFlusso.toFixed(2) + " m/s" +
