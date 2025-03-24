@@ -1,0 +1,84 @@
+import QtQuick 2.15
+import QtQuick.Window 2.15
+import QtQuick.Controls 2.15
+
+Window {
+    width: 640
+    height: 480
+    visible: true
+    title: qsTr("Menu Principale")
+
+    Rectangle {
+        anchors.fill: parent
+        gradient: Gradient {
+            GradientStop { position: 0.0; color: "#87CEEB" }
+            GradientStop { position: 1.0; color: "#4682B4" }
+        }
+    }
+
+    Text {
+        id: menuTitle
+        text: qsTr("Menu")
+        font.pixelSize: 48
+        font.bold: true
+        color: "white"
+        anchors.top: parent.top
+        anchors.topMargin: 20
+        anchors.horizontalCenter: parent.horizontalCenter
+    }
+
+    Column {
+        anchors.centerIn: parent
+        spacing: 20
+
+        Button {
+            id: startButton
+            text: qsTr("Start")
+            width: 200
+            height: 50
+            onClicked: {
+                console.log("Pulsante Start cliccato")
+            }
+
+            background: Rectangle {
+                color: startButton.hovered ? "#4CAF50" : "#2196F3"
+                radius: 10
+                border.width: 2
+                border.color: "white"
+            }
+
+            contentItem: Text {
+                text: startButton.text
+                font: startButton.font
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+
+        Button {
+            id: exitButton
+            text: qsTr("Exit")
+            width: 200
+            height: 50
+            onClicked: {
+                Qt.quit()
+            }
+
+            background: Rectangle {
+                color: exitButton.hovered ? "#F44336" : "#2196F3"
+                radius: 10
+                border.width: 2
+                border.color: "white"
+            }
+
+            contentItem: Text {
+                text: exitButton.text
+                font: exitButton.font
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+            }
+        }
+    }
+}
