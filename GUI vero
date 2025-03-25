@@ -4,7 +4,6 @@ import QtQuick.Controls 2.15
 ApplicationWindow {
     visible: true
     title: "Simulazione Estuario"
-
     visibility: Window.Maximized
 
     property string outputFileName
@@ -42,7 +41,6 @@ ApplicationWindow {
         anchors.fill: parent
         initialItem: page1
     }
-
     Component {
         id: page1
         Rectangle {
@@ -76,17 +74,47 @@ ApplicationWindow {
                 }
 
                 TextField {
-                    id: timeStep
-                    placeholderText: "Passo temporale (secondi)"
-                    width: parent.width * 0.8
-                    height: 40
-                }
-
-                TextField {
                     id: outputVars
                     placeholderText: "Variabili di output"
                     width: parent.width * 0.8
                     height: 40
+                }
+
+                Row {
+                    spacing: 20
+                    Text {
+                        text: "Unità di misura del passo temporale"
+                        font.pixelSize: 14
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+
+                    ComboBox {
+                        id: timeUnit
+                        width: parent.width * 0.3
+                        height: 40
+                        model: ["Secondi", "Minuti", "Ore"]
+                        currentIndex: -1  // Di default non c'è selezione
+                        onCurrentIndexChanged: {
+                            // Abilita il TextField solo se è selezionata un'unità di misura
+                            timeStep.enabled = timeUnit.currentIndex !== -1;
+                        }
+                    }
+                }
+
+                Row {
+                    spacing: 20
+                    TextField {
+                        id: timeStep
+                        placeholderText: "Passo temporale"
+                        width: parent.width * 0.8
+                        height: 40
+                        enabled: false  // Inizialmente disabilitato
+                        color: "#cccccc"  // Colore grigio per indicare che è disabilitato
+                        // Mostra il messaggio di errore se l'unità non è selezionata
+                        background: Rectangle {
+                            color: timeStep.enabled ? "#ffffff" : "#f0f0f0"
+                        }
+                    }
                 }
 
                 Row {
@@ -105,9 +133,9 @@ ApplicationWindow {
             }
         }
     }
+  }
 
-
-    Component {
+    Component{
         id: page2
         Rectangle {
             color: "#e0e0e0"
@@ -117,13 +145,24 @@ ApplicationWindow {
                 padding: 20
                 width: parent.width * 0.9
 
-                Text { text: "Geometria del Canale"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
+                Text {
+                    text: "Geometria del Canale";
+                    font.pixelSize: 20;
+                    font.bold: true;
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
 
                 TextField {
                     id: channelDataFile
                     placeholderText: "Nome del file di dati del canale"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 TextField {
@@ -131,6 +170,12 @@ ApplicationWindow {
                     placeholderText: "Nome file geometria canale sezioni trasversali"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 TextField {
@@ -138,6 +183,12 @@ ApplicationWindow {
                     placeholderText: "Condizione iniziale (0 = calma)"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 Text { text: "Condizione di confine superiore (0 = flusso aperto, 1 = riflettente, 2 = elevazione)" }
@@ -161,6 +212,12 @@ ApplicationWindow {
                     placeholderText: "Nome file DEBC"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 TextField {
@@ -168,6 +225,12 @@ ApplicationWindow {
                     placeholderText: "Nome file idroelettrico"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 Row {
@@ -192,8 +255,6 @@ ApplicationWindow {
             }
         }
     }
-
-
     Component {
         id: page3
         Rectangle {
@@ -203,13 +264,24 @@ ApplicationWindow {
                 spacing: 10
                 padding: 20
                 width: parent.width * 0.9
-                Text { text: "Costanti e Metodi di Calcolo"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
+                Text {
+                    text: "Costanti e Metodi di Calcolo";
+                    font.pixelSize: 20;
+                    font.bold: true;
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
 
                 TextField {
                     id: courantNumber
                     placeholderText: "Numero Courant (0 - 1)"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 Text { text: "Limitatore di flusso McComarck (y/n)" }
@@ -250,6 +322,12 @@ ApplicationWindow {
                     placeholderText: "Valore delta"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 Text { text: "Metodo del gradiente di superficie (y/n)" }
@@ -271,6 +349,12 @@ ApplicationWindow {
                     placeholderText: "Nome file salinità"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 TextField {
@@ -278,6 +362,12 @@ ApplicationWindow {
                     placeholderText: "Costante beta per la salinità"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 TextField {
@@ -285,6 +375,12 @@ ApplicationWindow {
                     placeholderText: "Costante di dispersione longitudinale, Kh"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 Text { text: "Calcolare il trasporto dei sedimenti (y/n)" }
@@ -298,14 +394,26 @@ ApplicationWindow {
                     id: sedimentTransportEquation
                     placeholderText: "Equazione per il trasporto solido"
                     width: parent.width * 0.8
-                    height: 40  // Altezza ridotta
+                    height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 TextField {
                     id: sedimentFile
                     placeholderText: "Nome file proprietà sedimenti"
                     width: parent.width * 0.8
-                    height: 40  // Altezza ridotta
+                    height: 40
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 Row {
@@ -330,8 +438,6 @@ ApplicationWindow {
             }
         }
     }
-
-
     Component {
         id: page4
         Rectangle {
@@ -341,14 +447,25 @@ ApplicationWindow {
                 spacing: 10
                 padding: 20
                 width: parent.width * 0.9
-                Text { text: "Risultati della Simulazione"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
+                Text {
+                    text: "Risultati della Simulazione";
+                    font.pixelSize: 20;
+                    font.bold: true;
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
 
                 TextArea {
                     id: page4Result
-                    text: ""
+                    text: "" // Inserisci qui i risultati della simulazione
                     width: parent.width * 0.8
                     height: parent.height * 0.6
                     readOnly: true
+                    color: "black" // Testo nero
+                    background: Rectangle {
+                        color: "white" // Sfondo bianco
+                        border.color: "black" // Bordo nero
+                        radius: 5
+                    }
                 }
 
                 Row {
@@ -367,6 +484,9 @@ ApplicationWindow {
             }
         }
     }
+
+
+    // Aggiungi componenti per altre pagine mantenendo lo stesso approccio di design.
 
     function avviaSimulazione() {
         var durata = parseInt(simulationDuration.text);
