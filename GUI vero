@@ -4,9 +4,9 @@ import QtQuick.Controls 2.15
 ApplicationWindow {
     visible: true
     title: "Simulazione Estuario"
-
     visibility: Window.Maximized
 
+    // Dichiarazione delle proprietà
     property string outputFileName
     property string startDate
     property string simulationDuration
@@ -16,26 +16,10 @@ ApplicationWindow {
     property string channelDataFile
     property string crossSectionFile
     property string initialCondition
-    property string boundaryConditionUpper
-    property string boundaryConditionLower
+    property string boundaryConditionUpper: "0"
+    property string boundaryConditionLower: "0"
     property string fileDEBC
     property string fileHydro
-
-    property string courantNumber
-    property string flowLimiter
-    property string flowLimiterEquation
-    property string psiFormula
-    property string deltaValue
-    property string gradientMethod
-    property string sourceTerm
-
-    property string salinityCalculation
-    property string salinityFile
-    property string betaSalinity
-    property string longitudinalDispersionKh
-    property string sedimentTransport
-    property string sedimentTransportEquation
-    property string sedimentFile
 
     StackView {
         id: stackView
@@ -43,29 +27,35 @@ ApplicationWindow {
         initialItem: page1
     }
 
+    // Prima pagina
     Component {
         id: page1
         Rectangle {
-            color: "#ffffff"
+            color: "#f0f0f0"
             Column {
                 anchors.centerIn: parent
                 spacing: 10
                 padding: 20
                 width: parent.width * 0.9
-                Text { text: "Simulazione Estuario"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
 
-                TextField {
-                    id: outputFileName
-                    placeholderText: "Nome del file di output"
-                    width: parent.width * 0.8
-                    height: 40
+                Text {
+                    text: "Impostazioni Simulazione"
+                    font.pixelSize: 20
+                    font.bold: true
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
 
                 TextField {
                     id: startDate
-                    placeholderText: "Data e ora di inizio (hh-mm-ss gg/mm/aaaa)"
+                    placeholderText: "Data di inizio (GG/MM/AAAA)"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 TextField {
@@ -73,6 +63,12 @@ ApplicationWindow {
                     placeholderText: "Durata della simulazione (secondi)"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 TextField {
@@ -80,6 +76,25 @@ ApplicationWindow {
                     placeholderText: "Passo temporale (secondi)"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
+                }
+
+                TextField {
+                    id: outputFileName
+                    placeholderText: "Nome file di output"
+                    width: parent.width * 0.8
+                    height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 TextField {
@@ -87,87 +102,148 @@ ApplicationWindow {
                     placeholderText: "Variabili di output"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
+                }
+
+                TextField {
+                    id: channelDataFile
+                    placeholderText: "Nome file dati canale"
+                    width: parent.width * 0.8
+                    height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
+                }
+
+                TextField {
+                    id: initialCondition
+                    placeholderText: "Condizione iniziale"
+                    width: parent.width * 0.8
+                    height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
+                }
+
+                Text { text: "Condizione di confine superiore" }
+                TextField {
+                    id: boundaryConditionUpper
+                    placeholderText: "Condizione di confine superiore"
+                    width: parent.width * 0.8
+                    height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
+                }
+
+                Text { text: "Condizione di confine inferiore" }
+                TextField {
+                    id: boundaryConditionLower
+                    placeholderText: "Condizione di confine inferiore"
+                    width: parent.width * 0.8
+                    height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 Row {
                     spacing: 20
                     Button {
-                        text: "Continua"
+                        text: "Avanti"
                         onClicked: {
                             stackView.push(page2)
                         }
-                    }
-                    Button {
-                        text: "Esci"
-                        onClicked: Qt.quit()
                     }
                 }
             }
         }
     }
-
-
+    // Seconda pagina
     Component {
         id: page2
         Rectangle {
-            color: "#e0e0e0"
+            color: "#f0f0f0"
             Column {
                 anchors.centerIn: parent
                 spacing: 10
                 padding: 20
                 width: parent.width * 0.9
 
-                Text { text: "Geometria del Canale"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
-
-                TextField {
-                    id: channelDataFile
-                    placeholderText: "Nome del file di dati del canale"
-                    width: parent.width * 0.8
-                    height: 40
+                Text {
+                    text: "Altre Impostazioni"
+                    font.pixelSize: 20
+                    font.bold: true
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
 
                 TextField {
-                    id: crossSectionFile
-                    placeholderText: "Nome file geometria canale sezioni trasversali"
+                    id: outputFileName
+                    placeholderText: "Nome file di output"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
+                }
+
+                TextField {
+                    id: outputVars
+                    placeholderText: "Variabili di output"
+                    width: parent.width * 0.8
+                    height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
+                }
+
+                TextField {
+                    id: channelDataFile
+                    placeholderText: "Nome file dati canale"
+                    width: parent.width * 0.8
+                    height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 TextField {
                     id: initialCondition
-                    placeholderText: "Condizione iniziale (0 = calma)"
+                    placeholderText: "Condizione iniziale"
                     width: parent.width * 0.8
                     height: 40
-                }
-
-                Text { text: "Condizione di confine superiore (0 = flusso aperto, 1 = riflettente, 2 = elevazione)" }
-                Row {
-                    spacing: 10
-                    RadioButton { text: "Flusso aperto"; checked: boundaryConditionUpper === "0"; onCheckedChanged: boundaryConditionUpper = "0" }
-                    RadioButton { text: "Riflettente"; checked: boundaryConditionUpper === "1"; onCheckedChanged: boundaryConditionUpper = "1" }
-                    RadioButton { text: "Elevazione"; checked: boundaryConditionUpper === "2"; onCheckedChanged: boundaryConditionUpper = "2" }
-                }
-
-                Text { text: "Condizione di confine inferiore (0 = flusso aperto, 1 = riflettente, 2 = elevazione)" }
-                Row {
-                    spacing: 10
-                    RadioButton { text: "Flusso aperto"; checked: boundaryConditionLower === "0"; onCheckedChanged: boundaryConditionLower = "0" }
-                    RadioButton { text: "Riflettente"; checked: boundaryConditionLower === "1"; onCheckedChanged: boundaryConditionLower = "1" }
-                    RadioButton { text: "Elevazione"; checked: boundaryConditionLower === "2"; onCheckedChanged: boundaryConditionLower = "2" }
-                }
-
-                TextField {
-                    id: fileDEBC
-                    placeholderText: "Nome file DEBC"
-                    width: parent.width * 0.8
-                    height: 40
-                }
-
-                TextField {
-                    id: fileHydro
-                    placeholderText: "Nome file idroelettrico"
-                    width: parent.width * 0.8
-                    height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 Row {
@@ -179,14 +255,10 @@ ApplicationWindow {
                         }
                     }
                     Button {
-                        text: "Continua"
+                        text: "Avanti"
                         onClicked: {
                             stackView.push(page3)
                         }
-                    }
-                    Button {
-                        text: "Esci"
-                        onClicked: Qt.quit()
                     }
                 }
             }
@@ -203,13 +275,25 @@ ApplicationWindow {
                 spacing: 10
                 padding: 20
                 width: parent.width * 0.9
-                Text { text: "Costanti e Metodi di Calcolo"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
+
+                Text {
+                    text: "Costanti e Metodi di Calcolo"
+                    font.pixelSize: 20
+                    font.bold: true
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
 
                 TextField {
-                    id: courantNumber
+                    id: courantNumberField
                     placeholderText: "Numero Courant (0 - 1)"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 Text { text: "Limitatore di flusso McComarck (y/n)" }
@@ -246,10 +330,16 @@ ApplicationWindow {
                 }
 
                 TextField {
-                    id: deltaValue
+                    id: deltaValueField
                     placeholderText: "Valore delta"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 Text { text: "Metodo del gradiente di superficie (y/n)" }
@@ -267,24 +357,42 @@ ApplicationWindow {
                 }
 
                 TextField {
-                    id: salinityFile
+                    id: salinityFileField
                     placeholderText: "Nome file salinità"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 TextField {
-                    id: betaSalinity
+                    id: betaSalinityField
                     placeholderText: "Costante beta per la salinità"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 TextField {
-                    id: longitudinalDispersionKh
+                    id: longitudinalDispersionKhField
                     placeholderText: "Costante di dispersione longitudinale, Kh"
                     width: parent.width * 0.8
                     height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 Text { text: "Calcolare il trasporto dei sedimenti (y/n)" }
@@ -295,17 +403,29 @@ ApplicationWindow {
                 }
 
                 TextField {
-                    id: sedimentTransportEquation
+                    id: sedimentTransportEquationField
                     placeholderText: "Equazione per il trasporto solido"
                     width: parent.width * 0.8
-                    height: 40  // Altezza ridotta
+                    height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 TextField {
-                    id: sedimentFile
+                    id: sedimentFileField
                     placeholderText: "Nome file proprietà sedimenti"
                     width: parent.width * 0.8
-                    height: 40  // Altezza ridotta
+                    height: 40
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 Row {
@@ -331,7 +451,6 @@ ApplicationWindow {
         }
     }
 
-
     Component {
         id: page4
         Rectangle {
@@ -341,14 +460,26 @@ ApplicationWindow {
                 spacing: 10
                 padding: 20
                 width: parent.width * 0.9
-                Text { text: "Risultati della Simulazione"; font.pixelSize: 20; font.bold: true; anchors.horizontalCenter: parent.horizontalCenter }
+
+                Text {
+                    text: "Risultati della Simulazione"
+                    font.pixelSize: 20
+                    font.bold: true
+                    anchors.horizontalCenter: parent.horizontalCenter
+                }
 
                 TextArea {
                     id: page4Result
-                    text: ""
+                    text: "" // Inserisci qui i risultati della simulazione
                     width: parent.width * 0.8
                     height: parent.height * 0.6
                     readOnly: true
+                    color: "black"
+                    background: Rectangle {
+                        color: "white"
+                        border.color: "black"
+                        radius: 5
+                    }
                 }
 
                 Row {
@@ -367,6 +498,10 @@ ApplicationWindow {
             }
         }
     }
+
+
+
+    // Aggiungi componenti per altre pagine mantenendo lo stesso approccio di design.
 
     function avviaSimulazione() {
         var durata = parseInt(simulationDuration.text);
