@@ -6,7 +6,7 @@ ApplicationWindow {
     title: "Simulazione Estuario"
     visibility: Window.Maximized
 
-    // Dichiarazione delle proprietà
+    
     property string outputFileName
     property string startDate
     property string simulationDuration
@@ -27,7 +27,7 @@ ApplicationWindow {
         initialItem: page1
     }
 
-    // Prima pagina
+   
     Component {
         id: page1
         Rectangle {
@@ -176,7 +176,7 @@ ApplicationWindow {
             }
         }
     }
-    // Seconda pagina
+    
     Component {
         id: page2
         Rectangle {
@@ -501,7 +501,7 @@ ApplicationWindow {
 
 
 
-    // Aggiungi componenti per altre pagine mantenendo lo stesso approccio di design.
+ 
 
     function avviaSimulazione() {
         var durata = parseInt(simulationDuration.text);
